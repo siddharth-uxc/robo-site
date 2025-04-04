@@ -1,0 +1,1415 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Robotics Club</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            color: #0f172a;
+            background: #ffffff;
+            overflow-x: hidden;
+        }
+
+        /* Navigation */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background-color: rgba(15, 23, 42, 0.9);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            transition: background-color 0.3s ease;
+        }
+
+        .navbar.scrolled {
+            background-color: rgba(15, 23, 42, 1);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .logo {
+            color: white;
+            font-size: 1.5rem;
+            font-weight: bold;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+        }
+
+        .logo svg {
+            margin-right: 0.5rem;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+        }
+
+        .nav-links li {
+            margin-left: 2rem;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: #22c55e;
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        /* Hero Section */
+        .hero-section {
+            background-image: url('https://images.unsplash.com/photo-1581092921461-39b9d08a9b21?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1920&q=80');
+            height: 100vh;
+            width: 100%;
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+
+        .hero-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+
+        .hero-content {
+            width: 80%;
+            max-width: 800px;
+            position: relative;
+            z-index: 1;
+            text-align: center;
+        }
+
+        .hero-title {
+            margin-bottom: 0;
+            color: white;
+            text-align: center;
+            font-size: 6rem;
+            font-weight: 900;
+            animation: fadeIn 2s ease-in-out;
+        }
+
+        .hero-subtitle {
+            margin-bottom: 20px;
+            color: white;
+            text-align: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .hero-button {
+            border: none;
+            background-color: #16a34a;
+            height: 60px;
+            width: 250px;
+            text-align: center;
+            color: white;
+            font-size: 1.2rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            animation: buttonAnimation 3s ease-in-out;
+        }
+
+        .hero-button:hover {
+            background-color: #22c55e;
+            transform: translateY(-5px);
+        }
+
+        /* Features Section */
+        .features-section {
+            padding: 5rem 0;
+            text-align: center;
+        }
+
+        .section-subtitle {
+            font-size: 2.5rem;
+            font-weight: 400;
+            margin-bottom: 0.5rem;
+            color: #0f172a;
+        }
+
+        .section-title {
+            font-size: 3rem;
+            font-weight: 800;
+            margin-bottom: 3rem;
+            color: #0f172a;
+        }
+
+        .features-grid {
+            width: 80%;
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 2rem;
+        }
+
+        .feature-box {
+            width: 250px;
+            background-color: white;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        .feature-box.visible {
+            opacity: 1;
+            transform: translateY(0);
+            transition: opacity 0.5s ease, transform 0.5s ease;
+        }
+
+        .feature-box:hover {
+            transform: translateY(-10px);
+        }
+
+        .feature-image-container {
+            width: 100%;
+            height: 200px;
+            overflow: hidden;
+        }
+
+        .feature-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .feature-box:hover .feature-image {
+            transform: scale(1.1);
+        }
+
+        .feature-icon-container {
+            width: 50px;
+            height: 50px;
+            background-color: #16a34a;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: -25px;
+            margin-bottom: 1rem;
+            z-index: 1;
+        }
+
+        .feature-icon {
+            color: white;
+            width: 24px;
+            height: 24px;
+        }
+
+        .feature-text {
+            padding: 1rem;
+            font-weight: 500;
+        }
+
+        /* About Section */
+        .about-section {
+            display: flex;
+            min-height: 100vh;
+            background-color: #f8fafc;
+        }
+
+        .about-section.reverse {
+            flex-direction: row-reverse;
+            background-color: white;
+        }
+
+        .about-content {
+            width: 50%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+            opacity: 0;
+            transform: translateX(-50px);
+        }
+
+        .about-content.visible {
+            opacity: 1;
+            transform: translateX(0);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+
+        .about-section.reverse .about-content {
+            transform: translateX(50px);
+        }
+
+        .about-section.reverse .about-content.visible {
+            transform: translateX(0);
+        }
+
+        .about-title {
+            font-size: 3rem;
+            font-weight: 800;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .about-text {
+            max-width: 80%;
+            line-height: 1.8;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .about-button {
+            background-color: #16a34a;
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .about-button:hover {
+            background-color: #22c55e;
+        }
+
+        .about-image-container {
+            width: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+            opacity: 0;
+            transform: translateX(50px);
+        }
+
+        .about-image-container.visible {
+            opacity: 1;
+            transform: translateX(0);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+
+        .about-section.reverse .about-image-container {
+            transform: translateX(-50px);
+        }
+
+        .about-section.reverse .about-image-container.visible {
+            transform: translateX(0);
+        }
+
+        .about-image {
+            width: 80%;
+            height: auto;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        /* Stats Section */
+        .stats-section {
+            background-image: url('https://images.unsplash.com/photo-1531482615713-2afd69097998?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1920&q=80');
+            background-attachment: fixed;
+            height: 60vh;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-size: cover;
+            background-position: center;
+            position: relative;
+        }
+
+        .stats-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+        }
+
+        .stats-container {
+            width: 80%;
+            max-width: 1200px;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .stat-box {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: white;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        .stat-box.visible {
+            opacity: 1;
+            transform: translateY(0);
+            transition: opacity 0.5s ease, transform 0.5s ease;
+        }
+
+        .stat-icon-container {
+            height: 100px;
+            width: 100px;
+            border-radius: 50%;
+            background-color: #16a34a;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .stat-icon {
+            width: 50px;
+            height: 50px;
+        }
+
+        .stat-text {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        /* Impact Section */
+        .impact-section {
+            padding: 5rem 0;
+            text-align: center;
+        }
+
+        .impact-grid {
+            width: 90%;
+            max-width: 1200px;
+            margin: 3rem auto;
+        }
+
+        .impact-row {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .impact-box {
+            flex: 1;
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            transition: transform 0.3s ease;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        .impact-box.visible {
+            opacity: 1;
+            transform: translateY(0);
+            transition: opacity 0.5s ease, transform 0.5s ease;
+        }
+
+        .impact-box:hover {
+            transform: translateY(-10px);
+        }
+
+        .impact-icon {
+            margin-bottom: 1rem;
+            width: 70px;
+            height: 70px;
+        }
+
+        .impact-title {
+            margin-bottom: 1rem;
+            font-weight: bold;
+        }
+
+        .impact-text {
+            line-height: 1.6;
+        }
+
+        /* Testimonials Section */
+        .testimonials-section {
+            padding: 5rem 0;
+            text-align: center;
+            background-color: #f8fafc;
+        }
+
+        .testimonials-container {
+            width: 80%;
+            max-width: 1200px;
+            margin: 3rem auto;
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+        }
+
+        .testimonial-box {
+            flex: 1;
+            max-width: 500px;
+            background-color: white;
+            padding: 2rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        .testimonial-box.visible {
+            opacity: 1;
+            transform: translateY(0);
+            transition: opacity 0.5s ease, transform 0.5s ease;
+        }
+
+        .testimonial-image-container {
+            width: 200px;
+            height: 200px;
+            margin-top: -100px;
+            margin-bottom: 2rem;
+        }
+
+        .testimonial-image {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .testimonial-text {
+            margin-bottom: 2rem;
+            line-height: 1.8;
+            font-style: italic;
+        }
+
+        .testimonial-name {
+            font-weight: bold;
+        }
+
+        /* Gallery Section */
+        .gallery-section {
+            padding: 2rem 0;
+        }
+
+        .gallery-grid {
+            width: 100%;
+        }
+
+        .gallery-row {
+            display: flex;
+            width: 100%;
+            gap: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .gallery-item {
+            flex: 1;
+            height: 300px;
+            overflow: hidden;
+            opacity: 0;
+            transform: scale(0.9);
+        }
+
+        .gallery-item.visible {
+            opacity: 1;
+            transform: scale(1);
+            transition: opacity 0.5s ease, transform 0.5s ease;
+        }
+
+        .gallery-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .gallery-item:hover .gallery-image {
+            transform: scale(1.1);
+        }
+
+        /* Contact Section */
+        .contact-section {
+            padding: 5rem 0;
+            text-align: center;
+        }
+
+        .contact-title {
+            font-size: 3rem;
+            font-weight: 800;
+            margin-bottom: 3rem;
+        }
+
+        .contact-container {
+            width: 80%;
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+        }
+
+        .contact-info {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            opacity: 0;
+            transform: translateX(-50px);
+        }
+
+        .contact-info.visible {
+            opacity: 1;
+            transform: translateX(0);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+
+        .contact-image {
+            width: 300px;
+            height: 300px;
+            border-radius: 50%;
+            margin-bottom: 2rem;
+        }
+
+        .contact-text {
+            margin-bottom: 2rem;
+            line-height: 1.8;
+        }
+
+        .contact-details {
+            font-weight: bold;
+            line-height: 1.8;
+        }
+
+        .contact-form {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            opacity: 0;
+            transform: translateX(50px);
+        }
+
+        .contact-form.visible {
+            opacity: 1;
+            transform: translateX(0);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+
+        .form-label {
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+            text-align: left;
+        }
+
+        .form-input-group {
+            display: flex;
+            margin-bottom: 1rem;
+        }
+
+        .form-input {
+            flex: 1;
+            padding: 1rem;
+            font-size: 1rem;
+            border: 1px solid #ccc;
+        }
+
+        .form-button {
+            padding: 1rem 2rem;
+            background-color: #16a34a;
+            color: white;
+            border: none;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .form-button:hover {
+            background-color: #22c55e;
+        }
+
+        /* Back to Top Button */
+        .back-to-top {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #16a34a;
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            opacity: 0;
+            transition: opacity 0.3s ease, background-color 0.3s ease;
+            z-index: 999;
+        }
+
+        .back-to-top.visible {
+            opacity: 1;
+        }
+
+        .back-to-top:hover {
+            background-color: #22c55e;
+        }
+
+        /* Footer */
+        .footer {
+            background-color: #0f172a;
+            color: white;
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .social-icons {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .social-icon {
+            color: white;
+            font-size: 1.5rem;
+            transition: color 0.3s ease;
+        }
+
+        .social-icon:hover {
+            color: #22c55e;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            0% {
+                opacity: 0;
+                transform: scale(0);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        @keyframes buttonAnimation {
+            0% {
+                transform: scale(0);
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            z-index: 1001;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background-color: white;
+            padding: 2rem;
+            border-radius: 5px;
+            max-width: 500px;
+            width: 90%;
+            position: relative;
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        .modal-title {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .modal-form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: bold;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.5rem;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+        }
+
+        .form-group textarea {
+            height: 100px;
+        }
+
+        .submit-btn {
+            background-color: #16a34a;
+            color: white;
+            border: none;
+            padding: 0.75rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .submit-btn:hover {
+            background-color: #22c55e;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .hero-title {
+                font-size: 5rem;
+            }
+            
+            .features-grid {
+                gap: 1rem;
+            }
+            
+            .about-section {
+                flex-direction: column;
+            }
+            
+            .about-section.reverse {
+                flex-direction: column;
+            }
+            
+            .about-content, .about-image-container {
+                width: 100%;
+            }
+            
+            .testimonials-container {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .contact-container {
+                flex-direction: column;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .mobile-menu-btn {
+                display: block;
+            }
+
+            .nav-links.active {
+                display: flex;
+                flex-direction: column;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                width: 100%;
+                background-color: #0f172a;
+                padding: 1rem 0;
+            }
+
+            .nav-links.active li {
+                margin: 0.5rem 0;
+                text-align: center;
+            }
+
+            .hero-title {
+                font-size: 4rem;
+            }
+            
+            .hero-subtitle {
+                font-size: 1.2rem;
+            }
+            
+            .section-title {
+                font-size: 2.5rem;
+            }
+            
+            .section-subtitle {
+                font-size: 2rem;
+            }
+            
+            .features-grid {
+                width: 90%;
+            }
+            
+            .feature-box {
+                width: 100%;
+                max-width: 350px;
+            }
+            
+            .stats-container {
+                flex-direction: column;
+                gap: 2rem;
+            }
+            
+            .impact-row {
+                flex-direction: column;
+            }
+            
+            .gallery-row {
+                flex-direction: column;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero-title {
+                font-size: 3rem;
+            }
+            
+            .hero-subtitle {
+                font-size: 1rem;
+            }
+            
+            .hero-button {
+                width: 200px;
+                height: 50px;
+                font-size: 1rem;
+            }
+            
+            .section-title {
+                font-size: 2rem;
+            }
+            
+            .section-subtitle {
+                font-size: 1.5rem;
+            }
+            
+            .about-title {
+                font-size: 2.5rem;
+            }
+            
+            .about-text {
+                max-width: 95%;
+            }
+            
+            .contact-image {
+                width: 200px;
+                height: 200px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <a href="#" class="logo">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 8V4H8"></path>
+                <rect x="4" y="4" width="16" height="16" rx="2"></rect>
+                <path d="M16 16h.01"></path>
+                <path d="M12 16h.01"></path>
+                <path d="M8 16h.01"></path>
+                <path d="M16 12h.01"></path>
+                <path d="M12 12h.01"></path>
+                <path d="M8 12h.01"></path>
+            </svg>
+            Robotics Club
+        </a>
+        <ul class="nav-links">
+            <li><a href="#features">Features</a></li>
+            <li><a href="#about">About</a></li>
+            <li><a href="#impact">Impact</a></li>
+            <li><a href="#testimonials">Testimonials</a></li>
+            <li><a href="#gallery">Gallery</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
+        <button class="mobile-menu-btn">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="3" y1="12" x2="21" y2="12"></line>
+                <line x1="3" y1="6" x2="21" y2="6"></line>
+                <line x1="3" y1="18" x2="21" y2="18"></line>
+            </svg>
+        </button>
+    </nav>
+
+    <!-- Hero Section -->
+    <div class="hero-section" id="home">
+        <div class="hero-content">
+            <h1 class="hero-title">Robotics Club</h1>
+            <p class="hero-subtitle">INNOVATE, BUILD, COMPETE</p>
+            <button class="hero-button" id="join-btn">JOIN US</button>
+        </div>
+    </div>
+
+    <!-- Features Section -->
+    <div class="features-section" id="features">
+        <h1 class="section-subtitle">Our Focus</h1>
+        <h1 class="section-title">ROBOTICS PILLARS</h1>
+        <div class="features-grid">
+            <div class="feature-box">
+                <div class="feature-image-container">
+                    <img src="https://images.unsplash.com/photo-1555255707-c07966088b7b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80" alt="Programming" class="feature-image">
+                </div>
+                <div class="feature-icon-container">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feature-icon"><rect x="4" y="4" width="16" height="16" rx="2" ry="2"></rect><rect x="9" y="9" width="6" height="6"></rect><line x1="9" y1="2" x2="9" y2="4"></line><line x1="15" y1="2" x2="15" y2="4"></line><line x1="9" y1="20" x2="9" y2="22"></line><line x1="15" y1="20" x2="15" y2="22"></line><line x1="20" y1="9" x2="22" y2="9"></line><line x1="20" y1="14" x2="22" y2="14"></line><line x1="2" y1="9" x2="4" y2="9"></line><line x1="2" y1="14" x2="4" y2="14"></line></svg>
+                </div>
+                <p class="feature-text">Programming & AI</p>
+            </div>
+            <div class="feature-box">
+                <div class="feature-image-container">
+                    <img src="https://images.unsplash.com/photo-1581093458791-9d15482442f5?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80" alt="Mechanical Design" class="feature-image">
+                </div>
+                <div class="feature-icon-container">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feature-icon"><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="4"></circle><line x1="12" y1="2" x2="12" y2="4"></line><line x1="12" y1="20" x2="12" y2="22"></line><line x1="2" y1="12" x2="4" y2="12"></line><line x1="20" y1="12" x2="22" y2="  y2="22"></line><line x1="2" y1="12" x2="4" y2="12"></line><line x1="20" y1="12" x2="22" y2="12"></line></svg>
+                </div>
+                <p class="feature-text">Mechanical Design</p>
+            </div>
+            <div class="feature-box">
+                <div class="feature-image-container">
+                    <img src="https://images.unsplash.com/photo-1580894908361-967195033215?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80" alt="Electronics" class="feature-image">
+                </div>
+                <div class="feature-icon-container">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feature-icon"><polyline points="14 6 9 12 14 18"></polyline><line x1="9" y1="12" x2="20" y2="12"></line></svg>
+                </div>
+                <p class="feature-text">Electronics & Circuits</p>
+            </div>
+            <div class="feature-box">
+                <div class="feature-image-container">
+                    <img src="https://images.unsplash.com/photo-1581092335397-9583eb92d232?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80" alt="Innovation" class="feature-image">
+                </div>
+                <div class="feature-icon-container">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feature-icon"><path d="M22 2L2 22"></path><path d="M18 6l2 2"></path><path d="M2 2l20 20"></path><path d="M14 10l-2-2"></path></svg>
+                </div>
+                <p class="feature-text">Innovation & Research</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- About Section 1 -->
+    <div class="about-section" id="about">
+        <div class="about-content">
+            <h1 class="about-title">LEARN AND<br>INNOVATE</h1>
+            <p class="about-text">
+                Our robotics club provides a collaborative environment where students can explore the exciting world of robotics. From building autonomous vehicles to programming intelligent systems, we offer hands-on experience with cutting-edge technology. Our members develop skills in mechanical engineering, electronics, programming, and problem-solving while working on real-world projects and participating in national and international competitions.
+            </p>
+            <button class="about-button">LEARN MORE</button>
+        </div>
+        <div class="about-image-container">
+            <img src="https://images.unsplash.com/photo-1581092918056-0c4c3acd3789?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" alt="Students working on robots" class="about-image">
+        </div>
+    </div>
+
+    <!-- About Section 2 -->
+    <div class="about-section reverse">
+        <div class="about-image-container">
+            <img src="https://images.unsplash.com/photo-1581092160607-ee22731c9c8c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" alt="Robot competition" class="about-image">
+        </div>
+        <div class="about-content">
+            <h1 class="about-title">COMPETE AND<br>EXCEL</h1>
+            <p class="about-text">
+                Our club regularly participates in prestigious robotics competitions including FIRST Robotics, VEX Robotics, and RoboCup. These competitions challenge our members to apply their skills in high-pressure environments, fostering teamwork and innovation. Through these experiences, our members develop not only technical expertise but also critical soft skills like project management, communication, and leadership that are valuable in any career path.
+            </p>
+            <button class="about-button">OUR ACHIEVEMENTS</button>
+        </div>
+    </div>
+
+    <!-- Stats Section -->
+    <div class="stats-section">
+        <div class="stats-container">
+            <div class="stat-box">
+                <div class="stat-icon-container">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="stat-icon"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+                </div>
+                <p class="stat-text">SINCE 2010</p>
+            </div>
+            <div class="stat-box">
+                <div class="stat-icon-container">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="stat-icon"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+                </div>
+                <p class="stat-text">50+ MEMBERS</p>
+            </div>
+            <div class="stat-box">
+                <div class="stat-icon-container">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="stat-icon"><path d="M8.21 13.89L7 23l5-3 5 3-1.21-9.12"></path><circle cx="12" cy="8" r="7"></circle></svg>
+                </div>
+                <p class="stat-text">15+ AWARDS</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Impact Section -->
+    <div class="impact-section" id="impact">
+        <h1 class="section-subtitle">Our Impact</h1>
+        <p class="section-title">ON TECHNOLOGY & SOCIETY</p>
+        <div class="impact-grid">
+            <div class="impact-row">
+                <div class="impact-box">
+                    <img src="https://cdn-icons-png.flaticon.com/512/2436/2436874.png" alt="Education icon" class="impact-icon">
+                    <h3 class="impact-title">STEM EDUCATION</h3>
+                    <p class="impact-text">Promoting science and technology education in our community.</p>
+                </div>
+                <div class="impact-box">
+                    <img src="https://cdn-icons-png.flaticon.com/512/1995/1995515.png" alt="Innovation icon" class="impact-icon">
+                    <h3 class="impact-title">INNOVATION</h3>
+                    <p class="impact-text">Creating solutions for real-world problems through robotics.</p>
+                </div>
+                <div class="impact-box">
+                    <img src="https://cdn-icons-png.flaticon.com/512/2910/2910756.png" alt="Sustainability icon" class="impact-icon">
+                    <h3 class="impact-title">SUSTAINABILITY</h3>
+                    <p class="impact-text">Developing eco-friendly technologies and practices.</p>
+                </div>
+            </div>
+            <div class="impact-row">
+                <div class="impact-box">
+                    <img src="https://cdn-icons-png.flaticon.com/512/3135/3135789.png" alt="Diversity icon" class="impact-icon">
+                    <h3 class="impact-title">DIVERSITY</h3>
+                    <p class="impact-text">Encouraging participation from underrepresented groups in tech.</p>
+                </div>
+                <div class="impact-box">
+                    <img src="https://cdn-icons-png.flaticon.com/512/1534/1534938.png" alt="Collaboration icon" class="impact-icon">
+                    <h3 class="impact-title">COLLABORATION</h3>
+                    <p class="impact-text">Working with industry partners on cutting-edge projects.</p>
+                </div>
+                <div class="impact-box">
+                    <img src="https://cdn-icons-png.flaticon.com/512/3281/3281289.png" alt="Future icon" class="impact-icon">
+                    <h3 class="impact-title">FUTURE LEADERS</h3>
+                    <p class="impact-text">Preparing the next generation of technology innovators.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Testimonials Section -->
+    <div class="testimonials-section" id="testimonials">
+        <h1 class="section-subtitle">they love</h1>
+        <h1 class="section-title">OUR ROBOTICS PROGRAM</h1>
+        <div class="testimonials-container">
+            <div class="testimonial-box">
+                <div class="testimonial-image-container">
+                    <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=300&q=80" alt="Student testimonial" class="testimonial-image">
+                </div>
+                <p class="testimonial-text">
+                    "Joining the robotics club was the best decision I made in college. The skills I learned helped me land my dream job at a leading tech company."
+                </p>
+                <h3 class="testimonial-name">ALEX JOHNSON</h3>
+            </div>
+            <div class="testimonial-box">
+                <div class="testimonial-image-container">
+                    <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=300&q=80" alt="Student testimonial" class="testimonial-image">
+                </div>
+                <p class="testimonial-text">
+                    "The mentorship and hands-on experience I received in the robotics club gave me confidence to pursue engineering as a career path."
+                </p>
+                <h3 class="testimonial-name">SARAH CHEN</h3>
+            </div>
+        </div>
+    </div>
+
+    <!-- Gallery Section -->
+    <div class="gallery-section" id="gallery">
+        <div class="gallery-grid">
+            <div class="gallery-row">
+                <div class="gallery-item">
+                    <img src="https://images.unsplash.com/photo-1581092160607-ee22731c9c8c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" alt="Robot competition" class="gallery-image">
+                </div>
+                <div class="gallery-item">
+                    <img src="https://images.unsplash.com/photo-1581092918056-0c4c3acd3789?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" alt="Team working" class="gallery-image">
+                </div>
+                <div class="gallery-item">
+                    <img src="https://images.unsplash.com/photo-1581092335397-9583eb92d232?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" alt="Robot prototype" class="gallery-image">
+                </div>
+            </div>
+            <div class="gallery-row">
+                <div class="gallery-item">
+                    <img src="https://images.unsplash.com/photo-1581093458791-9d15482442f5?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" alt="Award ceremony" class="gallery-image">
+                </div>
+                <div class="gallery-item">
+                    <img src="https://images.unsplash.com/photo-1555255707-c07966088b7b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" alt="Workshop" class="gallery-image">
+                </div>
+                <div class="gallery-item">
+                    <img src="https://images.unsplash.com/photo-1580894908361-967195033215?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" alt="Robot demonstration" class="gallery-image">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Contact Section -->
+    <div class="contact-section" id="contact">
+        <h1 class="contact-title">CONTACT US</h1>
+        <div class="contact-container">
+            <div class="contact-info">
+                <img src="https://images.unsplash.com/photo-1535378917042-10a22c95931a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" alt="Robot" class="contact-image">
+                <p class="contact-text">
+                    Have questions about joining our robotics club or interested in sponsoring our team? 
+                    Use our contact form or reach out directly using the contact information below.
+                </p>
+                <p class="contact-details">
+                    Email: robotics@university.edu<br>
+                    Phone: (123) 456-7890<br>
+                    Location: Lovely professional university phagwara punjab
+                </p>
+            </div>
+            <div class="contact-form">
+                <label class="form-label">JOIN OUR NEWSLETTER</label>
+                <div class="form-input-group">
+                    <input type="email" class="form-input" placeholder="Enter a valid email">
+                    <button class="form-button">SUBMIT</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Back to Top Button -->
+    <div class="back-to-top">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="12" y1="19" x2="12" y2="5"></line>
+            <polyline points="5 12 12 5 19 12"></polyline>
+        </svg>
+    </div>
+
+    <!-- Join Modal -->
+    <div class="modal" id="join-modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h2 class="modal-title">Join Our Robotics Club</h2>
+            <form class="modal-form" id="join-form">
+                <div class="form-group">
+                    <label for="name">Full Name</label>
+                    <input type="text" id="name" name="name" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="phone">Phone Number</label>
+                    <input type="tel" id="phone" name="phone">
+                </div>
+                <div class="form-group">
+                    <label for="interest">Area of Interest</label>
+                    <select id="interest" name="interest">
+                        <option value="">Select an option</option>
+                        <option value="programming">Programming & AI</option>
+                        <option value="mechanical">Mechanical Design</option>
+                        <option value="electronics">Electronics & Circuits</option>
+                        <option value="innovation">Innovation & Research</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="message">Why do you want to join?</label>
+                    <textarea id="message" name="message"></textarea>
+                </div>
+                <button type="submit" class="submit-btn">Submit Application</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+        <div class="social-icons">
+            <a href="#" class="social-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path>
+                </svg>
+            </a>
+            <a href="#" class="social-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                    <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                    <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+                </svg>
+            </a>
+            <a href="#" class="social-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path>
+                </svg>
+            </a>
+            <a href="#" class="social-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path>
+                    <rect x="2" y="9" width="4" height="12"></rect>
+                    <circle cx="4" cy="4" r="2"></circle>
+                </svg>
+            </a>
+        </div>
+        <p>© 2025 University Robotics Club. All rights reserved.</p>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            
+            const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
+            const navLinks = document.querySelector('.nav-links');
+            
+            mobileMenuBtn.addEventListener('click', function() {
+                navLinks.classList.toggle('active');
+            });
+
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    
+                    const targetId = this.getAttribute('href');
+                    if (targetId === '#') return;
+                    
+                    const targetElement = document.querySelector(targetId);
+                    if (targetElement) {
+                        window.scrollTo({
+                            top: targetElement.offsetTop - 70,
+                            behavior: 'smooth'
+                        });
+                    }
+                    
+                    
+                    if (navLinks.classList.contains('active')) {
+                        navLinks.classList.remove('active');
+                    }
+                });
+            });
+
+            
+            const navbar = document.querySelector('.navbar');
+            window.addEventListener('scroll', function() {
+                if (window.scrollY > 50) {
+                    navbar.classList.add('scrolled');
+                } else {
+                    navbar.classList.remove('scrolled');
+                }
+            });
+
+            // Back to top button
+            const backToTopBtn = document.querySelector('.back-to-top');
+            window.addEventListener('scroll', function() {
+                if (window.scrollY > 300) {
+                    backToTopBtn.classList.add('visible');
+                } else {
+                    backToTopBtn.classList.remove('visible');
+                }
+            });
+
+            backToTopBtn.addEventListener('click', function() {
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            });
+
+            // Modal functionality
+            const modal = document.getElementById('join-modal');
+            const joinBtn = document.getElementById('join-btn');
+            const closeModal = document.querySelector('.close-modal');
+            const joinForm = document.getElementById('join-form');
+
+            joinBtn.addEventListener('click', function() {
+                modal.style.display = 'flex';
+            });
+
+            closeModal.addEventListener('click', function() {
+                modal.style.display = 'none';
+            });
+
+            window.addEventListener('click', function(event) {
+                if (event.target === modal) {
+                    modal.style.display = 'none';
+                }
+            });
+
+            joinForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                alert('Thank you for your interest! Your application has been submitted.');
+                modal.style.display = 'none';
+                joinForm.reset();
+            });
+
+            // Scroll animations
+            function checkScroll() {
+                const elements = document.querySelectorAll('.feature-box, .impact-box, .stat-box, .testimonial-box, .gallery-item, .about-content, .about-image-container, .contact-info, .contact-form');
+                
+                elements.forEach(element => {
+                    const position = element.getBoundingClientRect();
+                    // If element is in viewport
+                    if (position.top < window.innerHeight * 0.9 && position.bottom >= 0) {
+                        element.classList.add('visible');
+                    }
+                });
+            }
+
+            
+            checkScroll();
+
+            
+            window.addEventListener('scroll', checkScroll);
+
+            
+            const newsletterForm = document.querySelector('.form-input-group');
+            const newsletterInput = document.querySelector('.form-input');
+            const newsletterButton = document.querySelector('.form-button');
+
+            newsletterButton.addEventListener('click', function() {
+                if (newsletterInput.value.trim() !== '' && validateEmail(newsletterInput.value)) {
+                    alert('Thank you for subscribing to our newsletter!');
+                    newsletterInput.value = '';
+                } else {
+                    alert('Please enter a valid email address.');
+                }
+            });
+
+            
+            function validateEmail(email) {
+                const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+                return re.test(String(email).toLowerCase());
+            }
+        });
+    </script>
+</body>
+</html>
